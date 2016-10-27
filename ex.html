@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body style="background:#eee">
+		<canvas id="canvas" width=800 height=500 style="background: #fff; outline: 1px solid #ddd">
+			HTML5 를 지원하지 않는 브라우저.
+		</canvas>
+		<script type="text/javascript">
+			var DOM={
+				canvas:document.getElementById("canvas")
+			}; //DOM객체를 정의합니다.
+			var context=DOM.canvas.getContext("2d");
+			var imgData=context.createImageData(800,500); //canvas 픽셀 정보를 받아 온다.
+
+			//좌표계 설정
+
+			var g_color=[0,0,0,255];
+			g_color=[50,50,50,255];
+
+			var x=-DOM.canvas.width/2;
+			var y;
+
+			for(var i=x; i<DOM.canvas.width/2; i++){
+				putPoint([i,0]);
+			}
+			for(var i=-DOM.canvas.height/2; i<DOM.canvas.height/2; i++){
+				putPoint([0,i]);
+			}
+
+			g_color=[255,0,0,255];
+			while( x<DOM.canvas.width/2 ){
+				y=Math.pow(x,3)*1/100;
+				putPoint([x,y]);
+				x+=0.1;
+			}
+			context.putImageData(imgData,0,0); //변경된 imgData의 픽셀정보를 출력한다.
+
+			function putPoint(p){
+				p[0]=parseInt(p[0])-DOM.canvas.width/2;
+				p[1]=DOM.canvas.height/2-parseInt(p[1]);
+
+				var rP=(p[1]*DOM.canvas.width+p[0])*4;
+				
+				imgData.data[rP]=g_color[0];
+				imgData.data[rP+1]=g_color[1];
+				imgData.data[rP+2]=g_color[2];
+				imgData.data[rP+3]=g_color[3];
+				
+				return true;
+			}
+
+		</script>
+	</body>
+</html>
